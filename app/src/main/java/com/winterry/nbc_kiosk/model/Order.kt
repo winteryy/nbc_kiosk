@@ -19,4 +19,8 @@ class Order(private val money: Int) {
     fun getCurrentOrderList(): List<MenuItem> {
         return orderList
     }
+
+    fun getTotalCost(): Int {
+        return totalCost
+    }
 }
