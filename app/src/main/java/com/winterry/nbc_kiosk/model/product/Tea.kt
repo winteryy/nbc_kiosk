@@ -4,7 +4,7 @@ import com.winterry.nbc_kiosk.model.Category
 
 class Tea(id: Int, name: String, price: Int) : MenuItem(id, name, price) {
 
-    companion object : Category {
+    companion object: Category {
 
         override fun getCategoryName(): String {
             return "Tea"
@@ -14,4 +14,5 @@ class Tea(id: Int, name: String, price: Int) : MenuItem(id, name, price) {
             return "다양한 풍미의 차 종류"
         }
     }
+
 }

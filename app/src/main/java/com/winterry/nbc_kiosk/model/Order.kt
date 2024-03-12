@@ -6,13 +6,17 @@ class Order(private val money: Int) {
     private val orderList = mutableListOf<MenuItem>()
     private var totalCost = 0
 
+    init {
+        if(money<0) throw Exception()
+    }
+
     fun addItem(menuItem: MenuItem): Boolean {
-        if (totalCost + menuItem.getPrice() <= money) {
+        return if (totalCost + menuItem.getPrice() <= money) {
             orderList.add(menuItem)
             totalCost += menuItem.getPrice()
-            return true
+            true
         } else {
-            return false
+            false
         }
     }
 

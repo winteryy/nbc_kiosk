@@ -1,10 +1,12 @@
 package com.winterry.nbc_kiosk
 
+import com.winterry.nbc_kiosk.model.Category
 import com.winterry.nbc_kiosk.model.Order
 import com.winterry.nbc_kiosk.model.data.ServerData
 import com.winterry.nbc_kiosk.model.data.ServerThread
 import com.winterry.nbc_kiosk.model.product.Coffee
 import com.winterry.nbc_kiosk.model.product.Dessert
+import com.winterry.nbc_kiosk.model.product.MenuItem
 import com.winterry.nbc_kiosk.model.product.Tea
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -18,30 +20,13 @@ class KioskClient {
             println("\n===현재 대기 중인 주문 수는 ${ServerData.getOrderNum()}개===")
         }
     }
-
-    val coffeeMenu = listOf(
-        Coffee(1, "아메리카노", 3000),
-        Coffee(2, "카페 라떼", 3600),
-        Coffee(3, "카푸치노", 3600),
-        Coffee(4, "카라멜 마키아또", 4500),
-        Coffee(5, "카페 모카", 4100)
-    )
-
-    val teaMenu = listOf(
-        Tea(6, "캐모마일 티", 3100),
-        Tea(7, "민트 티", 3100),
-        Tea(8, "제주 녹차", 3900),
-        Tea(9, "자몽 허니 블랙 티", 4300),
-        Tea(10, "유자 민트 티", 4600)
-    )
-
-    val dessertMenu = listOf(
-        Dessert(11, "초콜릿 케이크", 4900),
-        Dessert(12, "치즈 케이크", 4900),
-        Dessert(13, "레드벨벳 케이크", 5500),
-        Dessert(14, "버터쿠키", 1500),
-        Dessert(15, "마카롱", 2500)
-    )
+    private val menuData: List<Pair<List<MenuItem>, Category>> by lazy {
+        listOf<Pair<List<MenuItem>, Category>>(
+            ServerData.getCoffeeList() to Coffee,
+            ServerData.getTeaList() to Tea,
+            ServerData.getDessertList() to Dessert
+        )
+    }
 
     fun execute() {
         serverThread.start()
@@ -63,22 +48,11 @@ class KioskClient {
             }
 
             while(true) {
-                println("""[ CAFE A's Menu ]
-            
-           &1. ${Coffee.getCategoryName()}  : ${Coffee.getCategoryInfo()}
-           &2. ${Tea.getCategoryName()}  : ${Tea.getCategoryInfo()}
-           &3. ${Dessert.getCategoryName()}  : ${Dessert.getCategoryInfo()}
-           &9. 주문 취소 및 나가기
-           &0. 주문/결제하기
-        """.trimMargin("&"))
-
+                printMenuCategory()
                 val orderCategory = readln()
                 println()
 
                 when(orderCategory) {
-                    "1" -> orderCoffee()
-                    "2" -> orderTea()
-                    "3" -> orderDessert()
                     "9" -> break
                     "0" -> {
                         if(makeOrder()) {
@@ -87,26 +61,42 @@ class KioskClient {
                             break
                         }
                     }
-                    else -> printWrongInputWarn()
+                    else -> try {
+                        orderMenu(menuData[orderCategory.toInt()-1].first, menuData[orderCategory.toInt()-1].second)
+                    } catch (e: Exception) {
+                        printWrongInputWarn()
+                    }
                 }
             }
         }
 
     }
 
-    private fun orderCoffee() {
-        println("[ Coffee Menu ]")
-        for((ind, menu) in coffeeMenu.withIndex()) {
+    private fun printMenuCategory() {
+        println("[ CAFE A's Menu ]\n")
+        for((ind, category) in menuData.withIndex()) {
+            println("${ind+1}. ${category.second.getCategoryName()}  : ${category.second.getCategoryInfo()}")
+        }
+        println("9. 주문 취소 및 나가기\n0. 주문/결제하기")
+    }
+
+    private fun printDetailMenu(menuList: List<MenuItem>, category: Category) {
+        println("[ ${category.getCategoryName()} Menu ]")
+        for((ind, menu) in menuList.withIndex()) {
             println("${ind+1}. ${menu.getName()}  : ${menu.getPrice()} 원")
         }
         println("0. 뒤로가기")
+    }
+
+    private fun orderMenu(menuList: List<MenuItem>, category: Category) {
+        printDetailMenu(menuList, category)
 
         while(true) {
             val orderNum = readln()
             if(orderNum=="0") break
 
             try {
-                val selectMenu = coffeeMenu[orderNum.toInt()-1]
+                val selectMenu = menuList[orderNum.toInt()-1]
                 if(order.addItem(selectMenu)) {
                     println("${selectMenu.getName()} (이)가 추가되었습니다.")
                 }else {
@@ -115,62 +105,11 @@ class KioskClient {
             } catch (e: Exception) {
                 printWrongInputWarn()
             }
-
-        }
-    }
-
-    private fun orderTea() {
-        println("[ Tea Menu ]")
-        for((ind, menu) in teaMenu.withIndex()) {
-            println("${ind+1}. ${menu.getName()}  : ${menu.getPrice()} 원")
-        }
-        println("0. 뒤로가기")
-
-        while(true) {
-            val orderNum = readln()
-            if(orderNum=="0") break
-
-            try {
-                val selectMenu = teaMenu[orderNum.toInt()-1]
-                if(order.addItem(selectMenu)) {
-                    println("${selectMenu.getName()} (이)가 추가되었습니다.")
-                }else {
-                    println("잔액을 초과하는 주문입니다.")
-                }
-            } catch (e: Exception) {
-                printWrongInputWarn()
-            }
-
-        }
-    }
-
-    private fun orderDessert() {
-        println("[ Dessert Menu ]")
-        for((ind, menu) in dessertMenu.withIndex()) {
-            println("${ind+1}. ${menu.getName()}  : ${menu.getPrice()} 원")
-        }
-        println("0. 뒤로가기")
-
-        while(true) {
-            val orderNum = readln()
-            if(orderNum=="0") break
-
-            try {
-                val selectMenu = dessertMenu[orderNum.toInt()-1]
-                if(order.addItem(selectMenu)) {
-                    println("${selectMenu.getName()} (이)가 추가되었습니다.")
-                }else {
-                    println("잔액을 초과하는 주문입니다.")
-                }
-            } catch (e: Exception) {
-                printWrongInputWarn()
-            }
-
         }
     }
 
     private fun makeOrder(): Boolean {
-        println("아래와 같이 주문 하시겠습니까?\n\n[ Orders ]")
+        println("아래와 같이 주문 하시겠습니까? (현재 주문 대기 수: ${ServerData.getOrderNum()})\n\n[ Orders ]")
         for(item in order.getCurrentOrderList()) {
             println("${item.getName()}  : ${item.getPrice()} 원")
         }
@@ -210,6 +149,6 @@ class KioskClient {
     }
 
     private fun printWrongInputWarn() {
-        println("잘못된 입력입니다.")
+        println("잘못된 입력입니다.\n")
     }
 }
