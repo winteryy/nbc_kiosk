@@ -1,4 +1,4 @@
-package com.winterry.nbc_kiosk.model.data
+package com.winterry.nbc_kiosk.data
 
 import com.winterry.nbc_kiosk.model.product.Coffee
 import com.winterry.nbc_kiosk.model.product.Dessert

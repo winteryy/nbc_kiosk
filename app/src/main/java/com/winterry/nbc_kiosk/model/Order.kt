@@ -3,7 +3,7 @@ package com.winterry.nbc_kiosk.model
 import com.winterry.nbc_kiosk.model.product.MenuItem
 
 class Order(private val money: Int) {
-    private val orderList = mutableListOf<MenuItem>()
+    private val orderList = mutableMapOf<Int, OrderData>()
     private var totalCost = 0
 
     init {
@@ -14,7 +14,11 @@ class Order(private val money: Int) {
     fun addItem(menuItem: MenuItem): Boolean {
         //메뉴 추가 성공여부 반환
         return if (totalCost + menuItem.getPrice() <= money) {
-            orderList.add(menuItem)
+            if(orderList.containsKey(menuItem.getId())) {
+                orderList[menuItem.getId()]!!.amount++
+            }else {
+                orderList[menuItem.getId()] = OrderData(menuItem, 1)
+            }
             totalCost += menuItem.getPrice()
             true
         } else {
@@ -22,11 +26,17 @@ class Order(private val money: Int) {
         }
     }
 
-    fun getCurrentOrderList(): List<MenuItem> {
+    fun getCurrentOrderList(): Map<Int, OrderData> {
         return orderList
     }
 
     fun getTotalCost(): Int {
         return totalCost
     }
+
 }
+
+data class OrderData(
+    val menuItem: MenuItem,
+    var amount: Int = 0
+)

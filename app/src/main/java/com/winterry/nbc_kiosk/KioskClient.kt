@@ -2,8 +2,8 @@ package com.winterry.nbc_kiosk
 
 import com.winterry.nbc_kiosk.model.Category
 import com.winterry.nbc_kiosk.model.Order
-import com.winterry.nbc_kiosk.model.data.ServerData
-import com.winterry.nbc_kiosk.model.data.ServerThread
+import com.winterry.nbc_kiosk.data.ServerData
+import com.winterry.nbc_kiosk.data.ServerThread
 import com.winterry.nbc_kiosk.model.product.Coffee
 import com.winterry.nbc_kiosk.model.product.Dessert
 import com.winterry.nbc_kiosk.model.product.MenuItem
@@ -69,7 +69,6 @@ class KioskClient {
                 }
             }
         }
-
     }
 
     //메뉴 대분류 출력
@@ -114,8 +113,9 @@ class KioskClient {
     //주문 처리
     private fun makeOrder(): Boolean {
         println("아래와 같이 주문 하시겠습니까? (현재 주문 대기 수: ${ServerData.getOrderNum()})\n\n[ Orders ]")
-        for(item in order.getCurrentOrderList()) {
-            println("${item.getName()}  : ${item.getPrice()} 원")
+        for(orderData in order.getCurrentOrderList()) {
+            val orderItem = orderData.value.menuItem
+            println("${orderItem.getName()}  : ${orderItem.getPrice()} 원 * ${orderData.value.amount} 개 | ${orderItem.getPrice()*orderData.value.amount} 원")
         }
         println("\n[ Total ]\n${order.getTotalCost()} 원\n\n1. 주문/결제하기\t2. 돌아가기\n")
         while(true) {
@@ -128,7 +128,6 @@ class KioskClient {
                 else -> { printWrongInputWarn() }
             }
         }
-
     }
 
     //결제 처리
