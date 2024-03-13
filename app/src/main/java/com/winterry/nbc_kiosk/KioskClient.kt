@@ -72,6 +72,7 @@ class KioskClient {
 
     }
 
+    //메뉴 대분류 출력
     private fun printMenuCategory() {
         println("[ CAFE A's Menu ]\n")
         for((ind, category) in menuData.withIndex()) {
@@ -80,6 +81,7 @@ class KioskClient {
         println("9. 주문 취소 및 나가기\n0. 주문/결제하기")
     }
 
+    //상세 메뉴 출력
     private fun printDetailMenu(menuList: List<MenuItem>, category: Category) {
         println("[ ${category.getCategoryName()} Menu ]")
         for((ind, menu) in menuList.withIndex()) {
@@ -88,6 +90,7 @@ class KioskClient {
         println("0. 뒤로가기")
     }
 
+    //실제 메뉴 추가
     private fun orderMenu(menuList: List<MenuItem>, category: Category) {
         printDetailMenu(menuList, category)
 
@@ -108,6 +111,7 @@ class KioskClient {
         }
     }
 
+    //주문 처리
     private fun makeOrder(): Boolean {
         println("아래와 같이 주문 하시겠습니까? (현재 주문 대기 수: ${ServerData.getOrderNum()})\n\n[ Orders ]")
         for(item in order.getCurrentOrderList()) {
@@ -127,6 +131,7 @@ class KioskClient {
 
     }
 
+    //결제 처리
     private fun purchase(): Boolean {
         return if (isValidTime()) {
             val currentTime = LocalDateTime.now()
@@ -138,6 +143,7 @@ class KioskClient {
         }
     }
 
+    //결제 시간 유효성 체크
     private fun isValidTime(): Boolean {
         val currentTime = LocalDateTime.now()
 
