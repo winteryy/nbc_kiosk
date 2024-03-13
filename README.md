@@ -4,11 +4,25 @@
 ### 실행 이미지(Main.kt)
 
 <p align="center" width="100%">
-    <image src = "https://github.com/winteryy/nbc_calculator/blob/develop/screenshots/exc1.png" width="65%" >
-    <image src = "https://github.com/winteryy/nbc_calculator/blob/develop/screenshots/exc2.png" width="30%" >
-    <image src = "https://github.com/winteryy/nbc_calculator/blob/develop/screenshots/exc3.png" width="45%" >
-    <image src = "https://github.com/winteryy/nbc_calculator/blob/develop/screenshots/exc4.png" width="45%" >
+    <image src = "https://github.com/winteryy/nbc_kiosk/blob/develop/screenshots/sc_001.png" width="30%" >
+    <image src = "https://github.com/winteryy/nbc_kiosk/blob/develop/screenshots/sc_002.png" width="30%" >
 </p>
+
+- 일반적인 실행 프로세스
+
+<p align="center" width="100%">
+    <image src = "https://github.com/winteryy/nbc_kiosk/blob/develop/screenshots/sc_003.png"width="30%" >
+</p>
+
+- 생성되는 영수증 텍스트 파일
+
+<p align="center" width="100%">
+    <image src = "https://github.com/winteryy/nbc_kiosk/blob/develop/screenshots/sc_004.png"width="30%" >
+    <image src = "https://github.com/winteryy/nbc_kiosk/blob/develop/screenshots/sc_005.png"width="30%" >
+</p>
+
+- 예외 상황들 (2번째 이미지는 5초마다 현재 주문 대기 수 출력하는 코드 주석처리 안 한 상태)
+    
 
 ### 요구사항
 - [x] 콘솔 상에서 메뉴 보여주기와 같은 키오스크 기본 기능 구현 
@@ -33,6 +47,8 @@
 - 메뉴의 대분류 선택 및 세부 메뉴 선택으로 아이템을 주문 목록에 추가하며, 메뉴의 대분류 선택에서 주문/결제 단계로 진행할 수 있습니다.
 
 - 주문 목록은 제품의 종류 및 수량의 형태로 보여집니다.
+
+- 결제가 끝나면 3초 뒤, 처음으로 돌아갑니다.
 
 ### How to
 - `ServerData` Object를 사용하여 메뉴 데이터들을 외부에서 가져온다고 가정했습니다. 현재 주문 대기 수 또한 이 곳에서 관리됩니다.
