@@ -13,26 +13,19 @@ import java.time.format.DateTimeFormatter
 class KioskClient {
 
     private lateinit var order: Order
-    private val serverThread: ServerThread by lazy {
-        ServerThread {
-            Thread.sleep(5000L)
-            println("\n===현재 대기 중인 주문 수는 ${ServerData.getOrderNum()}개===")
-        }
-    }
-    private val menuData: List<Pair<List<MenuItem>, Category>> by lazy {
-        listOf<Pair<List<MenuItem>, Category>>(
-            ServerData.getCoffeeList() to Coffee,
-            ServerData.getTeaList() to Tea,
-            ServerData.getDessertList() to Dessert
-        )
-    }
-
+//    private val serverThread: ServerThread by lazy {
+//        ServerThread {
+//            Thread.sleep(5000L)
+//            println("\n===현재 대기 중인 주문 수는 ${ServerData.getOrderNum()}개===")
+//        }
+//    }
+    private val menuData = ServerData.getMenuData()
     private val receiptMaker = ReceiptMaker("CAFE A")
 
     fun execute() {
-        serverThread.start()
+//        serverThread.start()
         getOrder()
-        if(serverThread.isAlive) serverThread.interrupt()
+//        if(serverThread.isAlive) serverThread.interrupt()
     }
 
     private fun getOrder() {
@@ -114,6 +107,11 @@ class KioskClient {
 
     //주문 처리
     private fun makeOrder(): Boolean {
+        if(order.getCurrentOrderList().isEmpty()) {
+            println("주문 내역이 없습니다.\n")
+            return false
+        }
+
         println("아래와 같이 주문 하시겠습니까? (현재 주문 대기 수: ${ServerData.getOrderNum()})\n\n[ Orders ]")
         for(orderData in order.getCurrentOrderList()) {
             val orderItem = orderData.value.menuItem

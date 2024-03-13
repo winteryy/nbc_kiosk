@@ -1,7 +1,9 @@
 package com.winterry.nbc_kiosk.data
 
+import com.winterry.nbc_kiosk.model.product.Category
 import com.winterry.nbc_kiosk.model.product.Coffee
 import com.winterry.nbc_kiosk.model.product.Dessert
+import com.winterry.nbc_kiosk.model.product.MenuItem
 import com.winterry.nbc_kiosk.model.product.Tea
 
 object ServerData {
@@ -31,6 +33,12 @@ object ServerData {
         Dessert(15, "마카롱", 2500)
     )
 
+    private val menuData = listOf(
+        coffeeMenu to Coffee,
+        teaMenu to Tea,
+        dessertMenu to Dessert
+    )
+
     fun increaseOrderNum() {
         currentOrderNum++
     }
@@ -39,15 +47,7 @@ object ServerData {
         return currentOrderNum
     }
 
-    fun getCoffeeList(): List<Coffee> {
-        return coffeeMenu
-    }
-
-    fun getTeaList(): List<Tea> {
-        return teaMenu
-    }
-
-    fun getDessertList(): List<Dessert> {
-        return dessertMenu
+    fun getMenuData(): List<Pair<List<MenuItem>, Category>> {
+        return menuData
     }
 }

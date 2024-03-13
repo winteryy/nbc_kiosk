@@ -1,10 +1,8 @@
 package com.winterry.nbc_kiosk
 
 import java.io.File
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 class ReceiptMaker(private val tradeName: String) {
 
@@ -15,7 +13,7 @@ class ReceiptMaker(private val tradeName: String) {
             dir.mkdirs()
         }
 
-        val fileNameChunk = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss_")) + order.getIdString()
+        val fileNameChunk = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_")) + order.getIdString()
         val exportDate = fileNameChunk.take(8)
         val file = File("$directory/$fileNameChunk.txt")
         val writer = file.bufferedWriter()
@@ -30,7 +28,7 @@ class ReceiptMaker(private val tradeName: String) {
                  
                 =거래 내역=
             """.trimIndent()
-        println("영수증 들어온거: ${order.getCurrentOrderList().size}개")
+
         for (orderData in order.getCurrentOrderList()) {
             val orderItem = orderData.value.menuItem
             context += "\n${orderItem.getName()}  : ${orderItem.getPrice()} 원 * ${orderData.value.amount} 개 | ${orderItem.getPrice()*orderData.value.amount} 원"
