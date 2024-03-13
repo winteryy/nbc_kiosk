@@ -1,7 +1,6 @@
 package com.winterry.nbc_kiosk
 
-import com.winterry.nbc_kiosk.model.Category
-import com.winterry.nbc_kiosk.model.Order
+import com.winterry.nbc_kiosk.model.product.Category
 import com.winterry.nbc_kiosk.data.ServerData
 import com.winterry.nbc_kiosk.data.ServerThread
 import com.winterry.nbc_kiosk.model.product.Coffee
@@ -27,6 +26,8 @@ class KioskClient {
             ServerData.getDessertList() to Dessert
         )
     }
+
+    private val receiptMaker = ReceiptMaker("CAFE A")
 
     fun execute() {
         serverThread.start()
@@ -57,6 +58,7 @@ class KioskClient {
                     "0" -> {
                         if(makeOrder()) {
                             ServerData.increaseOrderNum()
+                            receiptMaker.makeReceipt(order)
                             Thread.sleep(3000L)
                             break
                         }

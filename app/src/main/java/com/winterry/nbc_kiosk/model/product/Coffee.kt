@@ -1,7 +1,5 @@
 package com.winterry.nbc_kiosk.model.product
 
-import com.winterry.nbc_kiosk.model.Category
-
 class Coffee(id: Int, name: String, price: Int): Beverage(id, name, price) {
 
     companion object: Category {
