@@ -3,10 +3,7 @@ package com.winterry.nbc_kiosk
 import com.winterry.nbc_kiosk.model.product.Category
 import com.winterry.nbc_kiosk.data.ServerData
 import com.winterry.nbc_kiosk.data.ServerThread
-import com.winterry.nbc_kiosk.model.product.Coffee
-import com.winterry.nbc_kiosk.model.product.Dessert
 import com.winterry.nbc_kiosk.model.product.MenuItem
-import com.winterry.nbc_kiosk.model.product.Tea
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
